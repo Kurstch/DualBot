@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "watch": true,
+        "outDir": "dist",
+        "typeRoots": ["./types"]
+    },
+    "include": ["src/*", "src/commands/*"],
+    "exclude": [],
+}
