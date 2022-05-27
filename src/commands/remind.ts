@@ -1,10 +1,11 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { CommandInteraction } from 'discord.js'
+import type { CommandInteraction } from 'discord.js'
+import type { BotlyModule } from 'discord-botly'
 
 let reminders = []
 
-export default {
-    data: new SlashCommandBuilder()
+export const { commandData, execute }: BotlyModule<CommandInteraction> = {
+    commandData: new SlashCommandBuilder()
         .setName('remind')
         .setDescription('Setup and configure reminders.')
         .addSubcommand(subcommand => subcommand
@@ -46,7 +47,8 @@ export default {
         .addSubcommand(subcommand => subcommand
             .setName('show')
             .setDescription('Shows incoming reminders')
-        ),
+    ),
+
     async execute(interaction: CommandInteraction) {
         console.log(interaction)
         const subcommand = interaction.options.getSubcommand()
