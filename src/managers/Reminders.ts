@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js'
 import Collection from '@discordjs/collection'
 
-import type { CommandInteraction, User } from 'discord.js'
+import type { CommandInteraction } from 'discord.js'
 import Reminder from '../classes/Reminder'
 
 class Reminders {
@@ -11,14 +11,6 @@ class Reminders {
         const reminder = new Reminder(interaction)
         this.reminders.set(reminder.id, reminder)
         reminder.events.on('ended', () => this.reminders.delete(reminder.id))
-    }
-
-    public getCreatedReminder(user: User): Collection<string, Reminder> {
-        return this.reminders.filter(reminder => reminder.author.id === user.id)
-    }
-
-    public getSubscribedReminders(user: User): Collection<string, Reminder> {
-        return this.reminders.filter(reminder => reminder.isSubscribed(user))
     }
 
     public getReminder(id: string): Reminder | undefined {
