@@ -1,12 +1,11 @@
-import { User, MessageEmbed, SnowflakeUtil, MessageActionRow, MessageButton } from 'discord.js'
+import { MessageActionRow, MessageButton, MessageEmbed, SnowflakeUtil } from 'discord.js'
+import { EventEmitter } from 'stream'
+import { stripIndent } from 'common-tags'
 import Collection from '@discordjs/collection'
 import schedule from 'node-schedule'
 import ms from 'ms'
-
-import type { CommandInteraction, Role, Guild, TextBasedChannel } from 'discord.js'
+import type { CommandInteraction, Role, Guild, TextBasedChannel, Message, User } from 'discord.js'
 import type { APIRole } from 'discord-api-types'
-import { stripIndent } from 'common-tags'
-import { EventEmitter } from 'stream'
 
 export default class Reminder {
     public readonly id: string
@@ -67,7 +66,7 @@ export default class Reminder {
     }
 
     private async sendReminderMsg(): Promise<void> {
-        const promises: Promise<any>[] = []
+        const promises: Promise<void | Message>[] = []
 
         for (const user of this.users.values()) {
             const msg = user.send({
@@ -87,7 +86,7 @@ export default class Reminder {
 
     private async sendReminderPanel(interaction: CommandInteraction, reminder: Reminder, role: Role | APIRole | null): Promise<void> {
         const roleMsg = role ? `\nThe reminder will be sent to all members with the role ${role.toString()}` : ''
-        return await interaction.reply({
+        return interaction.reply({
             embeds: [new MessageEmbed()
                 .setTitle('Reminder')
                 .setColor('BLURPLE')
